@@ -8,11 +8,12 @@ import Product from './pages/Product'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/PlaceOrder'
 import Orders from './pages/Orders'
+import Navbar from './components/Navbar'
 
 const App = () => {
   return (
     <div classname='px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]'>
-      
+      <Navbar />
       <Routes>
         <Route path='/' element={<Home/>} />
         <Route path='/collection' element={<Collection/>} />
