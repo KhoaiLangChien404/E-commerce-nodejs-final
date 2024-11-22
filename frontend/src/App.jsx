@@ -1,14 +1,15 @@
 import React from 'react'
 import {Routes, Route} from 'react-router-dom'
-import Home from './pages/home'
-import Collection from './pages/collection'
-import About from './pages/about'
-import Contact from './pages/contact'
+import Home from './pages/Home'
+import Collection from './pages/Collection'
+import About from './pages/About'
+import Contact from './pages/Contact'
 import Product from './pages/Product'
 import Cart from './pages/Cart'
 import PlaceOrder from './pages/PlaceOrder'
 import Orders from './pages/Orders'
 import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         <Route path='/orders' element={<Orders/>} />
 
       </Routes>
+      <Footer/>
     </div>
   )
 }
