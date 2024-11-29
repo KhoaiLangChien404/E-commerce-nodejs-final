@@ -12,3 +12,12 @@
 Install extensions: 
       ES7+ React/Redux/React-Native snippets
       Thunder Client
+/admin
+      npm create vite@latest ./y/react/javascript
+      npm install 
+      npm install axios react-router-dom react-toastify
+      npm run dev
+      npm install -D tailwindcss postcss autoprefixer
+      npx tailwindcss init -p
+
+
