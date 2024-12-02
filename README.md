@@ -4,6 +4,7 @@
       npm run dev(to run frontend)
       npm install -D tailwindcss postcss autoprefixer
       npx tailwindcss init -p
+      npm install axios
 /backend:
       npm init
       npm i cors dotenv express jsonwebtoken mongoose multer nodemon razorpay stripe validator cloudinary bcrypt
