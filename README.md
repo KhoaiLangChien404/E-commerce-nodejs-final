@@ -11,7 +11,6 @@
       npm install mongodb@5.5
 Install extensions: 
       ES7+ React/Redux/React-Native snippets
-      Thunder Client
 /admin
       npm create vite@latest ./y/react/javascript
       npm install 
