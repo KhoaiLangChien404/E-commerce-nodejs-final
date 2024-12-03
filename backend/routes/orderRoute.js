@@ -6,8 +6,8 @@ import authUser from '../middleware/auth.js'
 const orderRouter = express.Router()
 
 // admin features
-orderRouter.post('./list', adminAuth, allOrders)
-orderRouter.post('./status', adminAuth, updateStatus)
+orderRouter.post('/list', adminAuth, allOrders)
+orderRouter.post('/status', adminAuth, updateStatus)
 
 // payment features
 orderRouter.post('/place', authUser, placeOrder)
@@ -15,6 +15,6 @@ orderRouter.post('/stripe', authUser, placeOrderStripe)
 orderRouter.post('/razorpay', authUser, placeOrderRazorpay)
 
 // usesr feature
-orderRouter.post('/userorder', authUser, userOrders)
+orderRouter.post('/userorders', authUser, userOrders)
 
 export default orderRouter
