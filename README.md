@@ -5,6 +5,7 @@
       npm install -D tailwindcss postcss autoprefixer
       npx tailwindcss init -p
       npm install axios
+      npm install passport-google-oauth20 
 /backend:
       npm init
       npm i cors dotenv express jsonwebtoken mongoose multer nodemon razorpay stripe validator cloudinary bcrypt

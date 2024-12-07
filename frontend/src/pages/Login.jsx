@@ -37,11 +37,18 @@ const Login = () => {
         }
     }
 
-    useEffect(()=>{
-        if(token){
-            navigate('/')
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+    
+        if (token) {
+            localStorage.setItem('token', token); // Lưu token vào localStorage
+            setToken(token); // Cập nhật vào context
+            navigate('/'); // Điều hướng người dùng về trang chủ hoặc dashboard
+            toast.success('Logged in successfully!');
         }
-    }, [token])
+    }, [setToken, navigate]);
+    
 
     return (
         <form onSubmit={onSubmitHandler} className='flex flex-col items-center w-[90%] sm:max-w-96 m-auto mt-14 gap-4 text-gray-800'>
@@ -61,6 +68,11 @@ const Login = () => {
                 }
             </div>
             <button className='bg-black text-white font-light px-8 py-2 mt-4'>{currentState === 'Login' ? 'Sign In' : 'Sign Up'}</button>
+            <button 
+                onClick={() => window.location.href = `${backendUrl}/api/auth/google`}
+                className="bg-red-500 text-white font-light px-8 py-2 mt-4">
+                Sign in with Google
+            </button>
         </form>
     )
 }
