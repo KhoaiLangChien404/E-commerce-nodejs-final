@@ -11,8 +11,10 @@
       npm i cors dotenv express jsonwebtoken mongoose multer nodemon razorpay stripe validator cloudinary bcrypt
       npm run server(to run backend)
       npm install mongodb@5.5
+      npm install passport passport-google-oauth20 jsonwebtoken
 Install extensions: 
       ES7+ React/Redux/React-Native snippets
+
 /admin
       npm create vite@latest ./y/react/javascript
       npm install 
