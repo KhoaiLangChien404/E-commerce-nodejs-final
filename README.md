@@ -24,3 +24,4 @@ Install extensions:
       npm run dev
       npm install -D tailwindcss postcss autoprefixer
       npx tailwindcss init -p
+      npm install chart.js react-chartjs-2
