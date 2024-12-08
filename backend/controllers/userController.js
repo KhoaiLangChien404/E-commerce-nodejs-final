@@ -74,4 +74,36 @@ const adminLogin = async(req,res) => {
         res.json({success:false, message:error.message})
     }
 }
-export {loginUser, registerUser, adminLogin}
+const userStats = async (req, res) => {
+    try {
+      const totalUsers = await userModel.countDocuments({});
+      const newUsers = await userModel.countDocuments({
+        createdAt: { $gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) }, // Người dùng trong 7 ngày qua
+      });
+      res.json({ success: true, totalUsers, newUsers });
+    } catch (error) {
+      console.error(error);
+      res.json({ success: false, message: error.message });
+    }
+}
+export const getUserProfile = async (req, res) => {
+    try {
+      const user = await userModel.findById(req.user.id); // Giả sử bạn lưu thông tin người dùng trong req.user.id
+      if (!user) {
+        return res.status(404).json({ success: false, message: 'User not found' });
+      }
+  
+      res.json({
+        success: true,
+        user: {
+          name: user.name,
+          email: user.email,
+          defaultAddress: user.defaultAddress, // Địa chỉ mặc định của người dùng
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ success: false, message: 'Server error' });
+    }
+}
+export {loginUser, registerUser, adminLogin, userStats}

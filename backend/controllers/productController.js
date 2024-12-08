@@ -1,6 +1,6 @@
 import {v2 as cloudinary} from "cloudinary"
 import productModel from "../models/productModel.js"
-
+import orderModel from '../models/orderModel.js'
 
 const addProduct = async (req, res) => {
     try {
@@ -84,5 +84,28 @@ const singleProduct = async (req, res) => {
         res.json({success:false, message:error.message})
     }
 }
+const productStats = async (req, res) => {
+    try {
+      // Lấy tất cả đơn hàng
+      const orders = await orderModel.find({});
+      const productSales = {};
+  
+      // Tính tổng số lượng bán ra của từng sản phẩm
+      orders.forEach(order => {
+        order.items.forEach(item => {
+          if (productSales[item.productId]) {
+            productSales[item.productId] += item.quantity;
+          } else {
+            productSales[item.productId] = item.quantity;
+          }
+        });
+      });
+  
+      res.json({ success: true, productSales });
+    } catch (error) {
+      console.error(error);
+      res.json({ success: false, message: error.message });
+    }
+}
 
-export { addProduct, listProducts, removeProduct, singleProduct }
+export { addProduct, listProducts, removeProduct, singleProduct, productStats }
