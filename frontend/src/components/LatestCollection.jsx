@@ -17,8 +17,7 @@ const LatestCollection = () => {
                 <Title text1={'LATEST'} text2={'COLLECTION'} />
                 <p className="w-3/4" />
                 <p className="m-auto text-xs sm:text-sm md:text-base text-gray-600">
-                    Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                </p>
+                "Simple With A Twist"                </p>
             </div>
 
             {/* Rendering Products */}

@@ -1,13 +1,16 @@
 import React from 'react'
-import {assets} from '../assets/assets'
 
-const Navbar = ({setToken}) => {
+const Navbar = ({ setToken }) => {
     return (
-        <div className='flex items-center py-2 px-[4%] justify-between'>
-            <img className='w-[max(10%, 80px)]' src={assets.logo} alt="" />
-            <button onClick={()=>setToken('')} className='bg-gray-600 text-white px-5 py-2 sm:px-7 sm:py-2 rounded-full text-xs sm:text-sm'>Logout</button>
+        <div className='flex items-center py-7 px-[4%] justify-between bg-gray-100 shadow-md'>
+            <h1 className='text-2xl sm:text-4xl font-bold text-gray-800 tracking-wide'>Admin Panel</h1>
+            <button
+                onClick={() => setToken('')}
+                className='bg-gray-600 hover:bg-gray-700 text-white px-5 py-2 sm:px-7 sm:py-2 rounded-full text-xs sm:text-sm transition-all duration-300'>
+                Logout
+            </button>
         </div>
-    )
-}
- 
-export default Navbar
+    );
+};
+
+export default Navbar;
