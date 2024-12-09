@@ -4,7 +4,7 @@ import { ShopContext } from '../context/ShopContext'
 
 const MyProfile = () => {
     const { navigate } = useContext(ShopContext)
-    const [profile, setProfile] = useState({ name: '', email: '', phoneNum: '' ,password: '' });
+    const [profile, setProfile] = useState({ name: '', email: '', phoneNum: '', address: '', password: '' });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -55,6 +55,12 @@ const MyProfile = () => {
                 <div className="mb-4">
                     <p className="text-sm font-medium text-gray-700">Phone Number</p>
                     <p className="text-lg text-gray-900">{profile.phoneNum}</p>
+                </div>
+                <div className="mb-4">
+                    <p className="text-sm font-medium text-gray-700">Address</p>
+                    <p className={`text-lg ${profile.address ? 'text-gray-900' : 'text-gray-400'}`}>
+                        {profile.address || 'Do not have address yet'}
+                    </p>
                 </div>
                 <div className="mb-4">
                     <p className="text-sm font-medium text-gray-700">Email</p>

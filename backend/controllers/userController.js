@@ -81,7 +81,7 @@ const adminLogin = async(req,res) => {
 
 const editUserInfo = async(req,res) => {
     try {
-        const { name, email, phoneNum } = req.body;
+        const { name, email, phoneNum, address } = req.body;
 
         // Kiểm tra dữ liệu đầu vào
         if (!name || !email || !phoneNum) {
@@ -93,7 +93,7 @@ const editUserInfo = async(req,res) => {
         // Cập nhật name và email
         const updatedUser = await userModel.findByIdAndUpdate(
             userId,
-            { name, email, phoneNum },
+            { name, email, phoneNum, address },
             { new: true } // Trả về thông tin đã cập nhật
         );
 
@@ -107,6 +107,7 @@ const editUserInfo = async(req,res) => {
                 name: updatedUser.name,
                 email: updatedUser.email,
                 phoneNum: updatedUser.phoneNum,
+                address: updatedUser.address,
             },
         });
     } catch (error) {

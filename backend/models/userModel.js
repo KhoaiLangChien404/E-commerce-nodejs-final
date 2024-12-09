@@ -30,6 +30,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    address: {
+        type: String,
+        default: ''
+    },
 }, {minimize: false})
 
 const userModel = mongoose.models.user || mongoose.model('user',userSchema)
