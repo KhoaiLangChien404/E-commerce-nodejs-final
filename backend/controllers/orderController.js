@@ -48,7 +48,7 @@ const placeOrderStripe = async (req, res) => {
             items,
             address,
             amount,
-            paymentMethod: 'Stripe',
+            paymentMethod: "Stripe",
             payment: false,
             date: Date.now()
         }
@@ -81,11 +81,10 @@ const placeOrderStripe = async (req, res) => {
         })
 
         const session = await stripe.checkout.sessions.create({
-            success_url: `${origin}/verify? success=true&orderId=${newOrder._id}`,
-            cancel_url: `${origin}/verify? success=false&orderId=${newOrder._id}`,
+            success_url: `${origin}/verify?success=true&orderId=${newOrder._id}`,
+            cancel_url: `${origin}/cart`,
             line_items,
-            mode:'payment',
-
+            mode: 'payment',
         })
 
         res.json({success:true, session_url:session.url})
@@ -99,24 +98,25 @@ const placeOrderStripe = async (req, res) => {
 
 //verify stripe
 const verifyStripe = async (req, res) => {
-
-    const {orderId, success, userId} = req.body
+    const { orderId, success, userId } = req.body;
 
     try {
-        if (success === 'true')
-        {
-            await orderModel.findByIdAndUpdate(orderId, {payment:true} )
-            await userModel.findByIdAndUpdate(userId, {carData:{}})
-            res.json({success:true})
-        }
-        else
-        {
-            await orderModel.findByIdAndDelete(orderId)
-            res.json({success:false})
+        if (success === 'true') {
+            // Đánh dấu thanh toán là thành công
+            await orderModel.findByIdAndUpdate(orderId, { payment: true });
+
+            // Làm rỗng giỏ hàng của người dùng
+            await userModel.findByIdAndUpdate(userId, { cartData: {} });
+
+            res.json({ success: true });
+        } else {
+            // Nếu thanh toán thất bại
+            await orderModel.findByIdAndDelete(orderId);
+            res.json({ success: false, message: 'Payment verification failed.' });
         }
     } catch (error) {
-        console.log(error)   
-        res.json({success: false, message: error.message})
+        console.error(error);
+        res.status(500).json({ success: false, message: error.message });
     }
 }
 

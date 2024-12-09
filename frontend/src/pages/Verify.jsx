@@ -1,53 +1,48 @@
-import React from 'react'
-import { ShopContext } from '../context/ShopContext'
-import { useContext } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import { useEffect } from 'react'
-import {toast} from 'react-toastify'
-import axios from 'axios'
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { ShopContext } from '../context/ShopContext';
 
 const Verify = () => {
-
-    const { navigate, token, setCartItems, backendUrl } = useContext(ShopContext)
-    const [searchParams, setSearchParams] = useSearchParams()
-    const success = searchParams.get('success')
-    const orderId = searchParams.get('orderId')
-
-
-    const verifyPayment = async () => {
-
-        try {
-
-            if (!token) {
-                return null
-            }
-
-            const response = await axios.post(backendUrl + '/api/order/verifyStripe', {}, { success, orderId }, { headers: { token } })
-
-            if (response.data.success)
-            {
-                setCartItems({})
-                navigate('/orders')
-            } else{
-                navigate('/cart')
-            }
-
-        } catch (error) {
-            console.log(error)
-            toast.error(error.message)
-        }
-
-    }
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { token, setCartItems, backendUrl } = React.useContext(ShopContext);
 
     useEffect(() => {
-        verifyPayment()
-    }, [token])
+        const queryParams = new URLSearchParams(location.search);
+        const success = queryParams.get('success');
+        const orderId = queryParams.get('orderId');
 
-    return (
-        <div>
+        // Gửi yêu cầu xác thực trạng thái thanh toán về backend
+        if (success && orderId) {
+            axios
+                .post(
+                    `${backendUrl}/api/order/verifyStripe`,
+                    { orderId, success, userId: token },
+                    { headers: { token } }
+                )
+                .then((response) => {
+                    if (response.data.success) {
+                        setCartItems({}); // Làm rỗng giỏ hàng
+                        navigate('/orders'); // Điều hướng về trang Orders
+                    } else {
+                        toast.success('Paymet success');
+                        navigate('/cart');
+                    }
+                })
+                .catch((err) => {
+                    console.error('Error verifying payment:', err);
+                    toast.error('An error occurred. Please try again.');
+                    navigate('/cart');
+                });
+        } else {
+            toast.error('Invalid payment details.');
+            navigate('/cart');
+        }
+    }, [location, navigate, token, setCartItems, backendUrl]);
 
-        </div>
-    )
-}
+    return <div>Processing your payment...</div>; // Hiển thị thông báo trong khi xử lý
+};
 
-export default Verify
+export default Verify;
