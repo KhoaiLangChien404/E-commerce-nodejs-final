@@ -15,19 +15,19 @@ const PlaceOrder = () => {
         firstName: '',
         lastName: '',
         email: '',
-        street: '',
+        address: '',
         city: '',
         state: '',
         zipcode: '',
         country: '',
-        phone: ''
+        phoneNum: ''
     });
 
     // Lấy thông tin người dùng khi đã đăng nhập
     useEffect(() => {
         if (token) {
             axios
-                .get(`${backendUrl}/api/user/profile`, { headers: { Authorization: `Bearer ${token}` } })
+                .get(`${backendUrl}/api/user/history-profile`, { headers: { Authorization: `Bearer ${token}` } })
                 .then((response) => {
                     if (response.data.success) {
                         const userData = response.data.user;
@@ -36,12 +36,12 @@ const PlaceOrder = () => {
                             firstName: userData.firstName || '',
                             lastName: userData.lastName || '',
                             email: userData.email || '',
-                            street: userData.defaultAddress?.street || '',
-                            city: userData.defaultAddress?.city || '',
-                            state: userData.defaultAddress?.state || '',
-                            zipcode: userData.defaultAddress?.zipcode || '',
-                            country: userData.defaultAddress?.country || '',
-                            phone: userData.phone || ''
+                            phoneNum: userData.phoneNum || '',
+                            address: userData.address || '',
+                            city: userData.city || '',
+                            state: userData.state || '',
+                            zipcode: userData.zipcode || '',
+                            country: userData.country || '',
                         });
                     }
                 })
@@ -126,7 +126,7 @@ const PlaceOrder = () => {
                     <input required onChange={onChangeHandler} name="lastName" value={formData.lastName} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Last name" />
                 </div>
                 <input required onChange={onChangeHandler} name="email" value={formData.email} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="email" placeholder="Email address" />
-                <input required onChange={onChangeHandler} name="street" value={formData.street} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Street" />
+                <input required onChange={onChangeHandler} name="address" value={formData.address} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Street" />
                 <div className="flex gap-3">
                     <input required onChange={onChangeHandler} name="city" value={formData.city} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="City" />
                     <input required onChange={onChangeHandler} name="state" value={formData.state} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="State" />
@@ -135,7 +135,7 @@ const PlaceOrder = () => {
                     <input required onChange={onChangeHandler} name="zipcode" value={formData.zipcode} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="number" placeholder="Zipcode" />
                     <input required onChange={onChangeHandler} name="country" value={formData.country} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Country" />
                 </div>
-                <input required onChange={onChangeHandler} name="phone" value={formData.phone} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="number" placeholder="Phone" />
+                <input required onChange={onChangeHandler} name="phoneNum" value={formData.phoneNum} className="border border-gray-300 rounded py-1.5 px-3.5 w-full" type="text" placeholder="Phone" />
             </div>
             <div className="mt-8">
                 <CartTotal />

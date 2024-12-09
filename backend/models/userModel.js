@@ -25,7 +25,21 @@ const userSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
-    isBanned: { type: Boolean, default: false },
+
+    isBanned: { 
+        type: Boolean, 
+        default: false 
+    },
+
+    phoneNum: {
+        type: String,
+        unique: true,
+    },
+    address: {
+        type: String,
+        default: ''
+    },
+
 }, {minimize: false})
 
 const userModel = mongoose.models.user || mongoose.model('user',userSchema)
