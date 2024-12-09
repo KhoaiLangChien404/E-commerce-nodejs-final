@@ -28,10 +28,13 @@ const loginUser = async (req,res) => {
 }
 const registerUser = async(req,res) => {
     try {
-        const {name, email, password} = req.body
+        const {name, email, phoneNum, password} = req.body
         const exists = await userModel.findOne({email})
         if (exists) {
             return res.json({success:false, message: "User already exists"})
+        }
+        if (!name || !email || !phoneNum || !password) {
+            return res.json({ success: false, message: "All fields are required" });
         }
         if (!validator.isEmail(email)) {
             return res.json({success:false, message:"Please enter a valid email"})
@@ -44,7 +47,8 @@ const registerUser = async(req,res) => {
         const newUser = new userModel({
             name,
             email,
-            password:hashedPassword
+            phoneNum,
+            password:hashedPassword,
         })
         const user = await newUser.save()
         const token = createToken(user._id)
@@ -77,10 +81,10 @@ const adminLogin = async(req,res) => {
 
 const editUserInfo = async(req,res) => {
     try {
-        const { name, email } = req.body;
+        const { name, email, phoneNum } = req.body;
 
         // Kiểm tra dữ liệu đầu vào
-        if (!name || !email) {
+        if (!name || !email || !phoneNum) {
             return res.status(400).json({ success: false, message: 'Name and email are required' });
         }
 
@@ -89,7 +93,7 @@ const editUserInfo = async(req,res) => {
         // Cập nhật name và email
         const updatedUser = await userModel.findByIdAndUpdate(
             userId,
-            { name, email },
+            { name, email, phoneNum },
             { new: true } // Trả về thông tin đã cập nhật
         );
 
@@ -102,6 +106,7 @@ const editUserInfo = async(req,res) => {
             profile: {
                 name: updatedUser.name,
                 email: updatedUser.email,
+                phoneNum: updatedUser.phoneNum,
             },
         });
     } catch (error) {

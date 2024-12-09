@@ -10,12 +10,13 @@ const Login = () => {
     const [name, setName] = useState('')
     const [password, setPassword] = useState('')
     const [email, setEmail] = useState('')
+    const [phoneNum, setPhoneNum] = useState('')
  
     const onSubmitHandler = async (event) => {
         event.preventDefault()
         try {
             if(currentState === 'Sign Up'){
-                const response = await axios.post(backendUrl + '/api/user/register', {name, email, password})
+                const response = await axios.post(backendUrl + '/api/user/register', {name, email, password, phoneNum})
                 if(response.data.success){
                     setToken(response.data.token)
                     localStorage.setItem('token', response.data.token)
@@ -51,6 +52,7 @@ const Login = () => {
             </div>
             {currentState === 'Login' ? '' : <input onChange={(e)=>setName(e.target.value)} value={name} type="text" className='w-full px-3 py-2 border border-gray-800' placeholder='Name' required />}
             <input onChange={(e)=>setEmail(e.target.value)} value={email} type="email" className='w-full px-3 py-2 border border-gray-800' placeholder='Email' required />
+            {currentState === 'Login' ? '' : <input onChange={(e)=>setPhoneNum(e.target.value)} value={phoneNum} type="text" className='w-full px-3 py-2 border border-gray-800' placeholder='Phone Number' required />}
             <input onChange={(e)=>setPassword(e.target.value)} value={password} type="password" className='w-full px-3 py-2 border border-gray-800' placeholder='Password' required />
             <div className='w-full flex justify-between text-sm mt-[-8px]'>
                 <p className='cursor-pointer'>Forgot your password?</p>

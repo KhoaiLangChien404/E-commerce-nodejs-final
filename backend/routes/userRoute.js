@@ -21,6 +21,7 @@ userRouter.get('/profile', authMiddleware, async (req, res) => {
             profile: {
                 name: user.name,
                 email: user.email,
+                phoneNum: user.phoneNum,
                 password: user.password,
             },
         });
