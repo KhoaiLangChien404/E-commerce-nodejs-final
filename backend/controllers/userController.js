@@ -106,4 +106,61 @@ export const getUserProfile = async (req, res) => {
       res.status(500).json({ success: false, message: 'Server error' });
     }
 }
-export {loginUser, registerUser, adminLogin, userStats}
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await userModel.find({}, '-password'); // Không trả về mật khẩu
+        res.json({ success: true, users });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+const updateUser = async (req, res) => {
+    try {
+        const { userId, name, email, isBanned } = req.body;
+
+        const user = await userModel.findByIdAndUpdate(
+            userId,
+            { name, email, isBanned },
+            { new: true }
+        );
+
+        res.json({ success: true, user });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+const banUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        const user = await userModel.findByIdAndUpdate(
+            userId,
+            { isBanned: true },
+            { new: true }
+        );
+
+        res.json({ success: true, message: 'User has been banned', user });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+const unbanUser = async (req, res) => {
+    try {
+        const { userId } = req.body;
+
+        const user = await userModel.findByIdAndUpdate(
+            userId,
+            { isBanned: false },
+            { new: true }
+        );
+
+        res.json({ success: true, message: 'User has been unbanned', user });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+export {loginUser, registerUser, adminLogin, userStats, getAllUsers, updateUser, banUser, unbanUser}

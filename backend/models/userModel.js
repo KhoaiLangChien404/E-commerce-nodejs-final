@@ -25,6 +25,7 @@ const userSchema = new mongoose.Schema({
         type: Object,
         default: {}
     },
+    isBanned: { type: Boolean, default: false },
 }, {minimize: false})
 
 const userModel = mongoose.models.user || mongoose.model('user',userSchema)

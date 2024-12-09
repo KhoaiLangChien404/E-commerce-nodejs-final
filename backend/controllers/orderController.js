@@ -162,5 +162,49 @@ const updateStatus = async (req, res) => {
         res.json({success: false, message: error.message})
     }
 }
+const getDashboardStats = async (req, res) => {
+    try {
+        const { period } = req.query; // `period` có thể là "month" hoặc "week"
+        const now = new Date();
 
-export {verifyStripe,placeOrder, placeOrderStripe, allOrders, userOrders, updateStatus}
+        let startDate;
+        if (period === "month") {
+            startDate = new Date(now.getFullYear(), now.getMonth() - 11, 1); // 12 tháng trước
+        } else {
+            startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7 * 11); // 12 tuần trước
+        }
+
+        const orders = await orderModel.find({
+            date: { $gte: startDate.getTime() }, // Lọc các đơn hàng từ startDate
+        });
+
+        const stats = Array(12).fill(0).map(() => ({
+            revenue: 0,
+            profit: 0,
+            orders: 0,
+        }));
+
+        orders.forEach((order) => {
+            const orderDate = new Date(order.date);
+
+            let index;
+            if (period === "month") {
+                index = now.getMonth() - orderDate.getMonth() + (now.getFullYear() - orderDate.getFullYear()) * 12;
+            } else {
+                index = Math.floor((now - orderDate) / (7 * 24 * 60 * 60 * 1000));
+            }
+
+            if (index >= 0 && index < 12) {
+                stats[index].revenue += order.amount;
+                stats[index].profit += order.amount * 0.2; // Giả sử lợi nhuận là 20% doanh thu
+                stats[index].orders += 1;
+            }
+        });
+
+        res.json({ success: true, stats });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: error.message });
+    }
+}
+export {verifyStripe,placeOrder, placeOrderStripe, allOrders, userOrders, updateStatus, getDashboardStats}
